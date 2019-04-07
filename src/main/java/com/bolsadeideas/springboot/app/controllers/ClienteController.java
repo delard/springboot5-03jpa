@@ -31,13 +31,12 @@ public class ClienteController {
 	public String crear(Map<String,Object> model) {
 		Cliente cliente = new Cliente();
 		model.put("cliente", cliente);
-		model.put("titulo", "Fromulario de cliente");
+		model.put("titulo", "Formulario de cliente");
 		return "form";
 	}
 	
 	@RequestMapping(value="/form", method=RequestMethod.POST) 
 	public String guardar(Cliente cliente) {
-		// Este es un segundo comentario de prueba de GIT
 		clienteDao.save(cliente);
 		return "redirect:listar";
 	}
