@@ -37,7 +37,7 @@ public class ClienteController {
 	
 	@RequestMapping(value="/form", method=RequestMethod.POST) 
 	public String guardar(Cliente cliente) {
-		// Este es un comentario de pruba de GIT
+		// Este es un segundo comentario de prueba de GIT
 		clienteDao.save(cliente);
 		return "redirect:listar";
 	}
