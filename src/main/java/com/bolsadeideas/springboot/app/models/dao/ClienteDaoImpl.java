@@ -18,13 +18,11 @@ public class ClienteDaoImpl implements IClienteDao {
 	private EntityManager em;
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
 	@Override
 	public List<Cliente> findAll() {
 		return em.createQuery("from Cliente").getResultList();
 	}
 
-	@Transactional
 	@Override
 	public void save(Cliente cliente) {
 		if (cliente.getId() != null && cliente.getId()>0){
@@ -34,13 +32,11 @@ public class ClienteDaoImpl implements IClienteDao {
 		}
 	}
 
-	@Transactional(readOnly=true)
 	@Override
 	public Cliente findOne(Long id) {
 		return em.find(Cliente.class, id);
 	}
 
-	@Transactional
 	@Override
 	public void delete(Long id) {
 		Cliente cliente =  em.find(Cliente.class, id);
