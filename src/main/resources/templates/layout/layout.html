@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="UTF-8" />
+<title th:text="'Spring Boot: MVC + Thymeleaf + Data JPA - ' + ${titulo}"></title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+</head>
+<body>
+	<header th:fragment="header">
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+			<a class="navbar-brand" href="https://spring.io/projects/spring-boot/">Spring Boot</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="#about"
+						th:href="@{/listar}">Clientes</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container"></div>
+
+	<footer class="container" th:fragment="footer">
+	<hr/>
+	<h6><small>
+	<img th:src="@{/images/spring.png}" alt="Spring Logo" />
+	Powerer by <a href="https://spring.io/projects/spring-boot/">Spring Boot</a>, 
+		<a href="https://www.thymeleaf.org/">ThymeLeaf</a> y  
+		<a href="https://getbootstrap.com/">Bootstrap</a>. 
+	</small></h6>
+	<h6><small>
+	Este proyecto fue desarrollado en un IDE Eclipse + Spring Plugins (STS Spring Tools), David de la Rosa <br/>
+	&copy; Company 2019, Inc. Todos los derechos reservados. términos de uso y privacidad.<br/> 
+	</small></h6>
+	
+	</footer>
+
+</body>
+</html>
