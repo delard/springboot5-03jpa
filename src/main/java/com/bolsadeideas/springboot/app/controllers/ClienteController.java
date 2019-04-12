@@ -62,8 +62,10 @@ public class ClienteController {
 	@RequestMapping(value="/form", method=RequestMethod.POST) 
 	public String guardar(@Valid Cliente cliente, BindingResult result, Map<String,Object> model, 
 			RedirectAttributes flash, SessionStatus status) {
+		
+		String valueBtn = (cliente.getId() != null) ? "Editar cliente" : "Guardar cliente" ;
 		if(result.hasErrors()) {
-			model.put("titulo", "Formulario de cliente");
+			model.put("titulo", valueBtn);
 			return "form";
 			}
 		String msgFlash = (cliente.getId() != null) ? "Cliente editado con exito" : "Cliente creado con exito" ;
