@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
 <meta charset="UTF-8" />
-<title th:text="'Spring Boot: MVC + Thymeleaf + Data JPA - ' + ${titulo}"></title>
+<title th:text="'Spring Boot: MVC + Thymeleaf + Data JPA + Bootstrap- ' + ${titulo}"></title>
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
 	<header th:fragment="header">
@@ -38,7 +38,10 @@
 	Este proyecto fue desarrollado en un IDE Eclipse + Spring Plugins (STS Spring Tools), David de la Rosa <br/>
 	&copy; Company 2019, Inc. Todos los derechos reservados. términos de uso y privacidad.<br/> 
 	</small></h6>
-	
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Bootstrap JS -->
+		<script th:src="@{/js/jquery-3.4.0.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>	
 	</footer>
 
 </body>
