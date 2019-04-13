@@ -1,5 +1,9 @@
 package com.bolsadeideas.springboot.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -12,11 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
@@ -71,15 +77,31 @@ public class ClienteController {
 		return "form";
 	}
 	
-	@RequestMapping(value="/form", method=RequestMethod.POST) 
+	@PostMapping(value="/form") 
 	public String guardar(@Valid Cliente cliente, BindingResult result, Map<String,Object> model, 
-			RedirectAttributes flash, SessionStatus status) {
+			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 		
 		String valueBtn = (cliente.getId() != null) ? "Editar cliente" : "Crear cliente" ;
 		if(result.hasErrors()) {
 			model.put("titulo", valueBtn);
 			return "form";
 			}
+		
+		if (foto != null && !foto.isEmpty()) {
+			Path directorioRecursos = Paths.get("src///main//resources//static//uploads");
+			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			try {
+				byte[] bytes = foto.getBytes();
+				Path rutaCompletaPath = Paths.get(rootPath + "//" + foto.getOriginalFilename());
+				Files.write(rutaCompletaPath, bytes);
+				flash.addFlashAttribute("info", "Has subido correctamente '" + foto.getOriginalFilename() + "'");
+				cliente.setFoto(foto.getOriginalFilename());
+			} catch (IOException e) {
+				flash.addFlashAttribute("error", "La cagaste BurtLancaster '" + foto.getOriginalFilename() + "' " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
 		String msgFlash = (cliente.getId() != null) ? "Cliente editado con exito" : "Cliente creado con exito" ;
 		clienteService.save(cliente);
 		status.setComplete();
