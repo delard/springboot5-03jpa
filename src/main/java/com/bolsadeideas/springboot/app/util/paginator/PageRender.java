@@ -33,7 +33,7 @@ public class PageRender<T> {
 			} else if (paginaActual >= totalPaginas-numElementosPorPagina/2) {
 				desde = totalPaginas - numElementosPorPagina + 1;
 			} else {
-				desde = paginaActual - numElementosPorPagina/1;
+				desde = paginaActual - numElementosPorPagina/2;
 			}
 			hasta = numElementosPorPagina;
 		}
