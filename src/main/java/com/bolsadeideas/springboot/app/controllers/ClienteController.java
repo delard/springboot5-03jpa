@@ -35,6 +35,8 @@ public class ClienteController {
 		Pageable pageRequest = PageRequest.of(page, 5);
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 		
+		
+		
 		model.addAttribute("titulo", "Listado de clientes");
 		model.addAttribute("clientes", clientes);
 
@@ -71,7 +73,7 @@ public class ClienteController {
 	public String guardar(@Valid Cliente cliente, BindingResult result, Map<String,Object> model, 
 			RedirectAttributes flash, SessionStatus status) {
 		
-		String valueBtn = (cliente.getId() != null) ? "Editar cliente" : "Guardar cliente" ;
+		String valueBtn = (cliente.getId() != null) ? "Editar cliente" : "Crear cliente" ;
 		if(result.hasErrors()) {
 			model.put("titulo", valueBtn);
 			return "form";
