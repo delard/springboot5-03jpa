@@ -112,11 +112,12 @@ public class ClienteController {
 			}
 		
 		if (foto != null && !foto.isEmpty()) {
-			Path directorioRecursos = Paths.get("src///main//resources//static//uploads");
-			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			
+			String rootPath = "D://DRD_FORMACION//PRJS//Temp//uploads//";
+			
 			try {
 				byte[] bytes = foto.getBytes();
-				Path rutaCompletaPath = Paths.get(rootPath + "//" + foto.getOriginalFilename());
+				Path rutaCompletaPath = Paths.get(rootPath + foto.getOriginalFilename());
 				Files.write(rutaCompletaPath, bytes);
 				flash.addFlashAttribute("info", "Has subido correctamente '" + foto.getOriginalFilename() + "'");
 				cliente.setFoto(foto.getOriginalFilename());
