@@ -6,19 +6,38 @@
 
 	<div class="container py-4 ">
 		<div class="card bg-secondary shadow-lg p-3 mb-5 rounded">
-		<div class="card-header text-lg-left font-weight-bold text-light bg-dark rounded"><h3 th:text="${titulo}"></h3></div>
+			<div
+				class="card-header text-lg-left font-weight-bold text-light bg-dark rounded">
+				<h3 th:text="${titulo}"></h3>
+			</div>
 			<div class="card-body text-light">
-			<img th:if="${#strings.length(cliente.foto) > 0 }" class="img.thumbnail rounded float-left" style="max-width: 25%;" 
-					th:alt-title="${cliente.foto}" th:src="@{'/uploads/' + ${cliente.foto}}"/>
-			<ul class="list-group">
-			<li class="list-group-item bg-secondary" th:text="${cliente.nombre}"></li>
-			<li class="list-group-item bg-secondary" th:text="${cliente.apellido}"></li>
-			<li class="list-group-item bg-secondary" th:text="${cliente.email}"></li>
-			<li class="list-group-item bg-secondary" th:text="${cliente.createAt}"></li>
-			</ul>
+
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-4"
+							th:if="${#strings.length(cliente.foto) > 0 }">
+							<img th:if="${#strings.length(cliente.foto) > 0 }"
+								class="img-fluid rounded" th:alt-title="${cliente.foto}"
+								th:src="@{'/uploads/' + ${cliente.foto}}" />
+						</div>
+						<div class="col-sm-8">
+							<ul class="list-group">
+								<li class="list-group-item bg-secondary"
+									th:text="${cliente.nombre}"></li>
+								<li class="list-group-item bg-secondary"
+									th:text="${cliente.apellido}"></li>
+								<li class="list-group-item bg-secondary"
+									th:text="${cliente.email}"></li>
+								<li class="list-group-item bg-secondary"
+									th:text="${cliente.createAt}"></li>
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-		</div>
-		</div>
-		<footer th:replace="layout/layout :: footer"></footer>
+	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>
