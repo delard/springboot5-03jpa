@@ -16,6 +16,8 @@
 					</ul>
 				</div>
 
+				<img th:if="${#strings.length(cliente.foto) > 0 }" class="img.thumbnail rounded float-left" style="max-width: 25%;" 
+					th:alt-title="${cliente.foto}" th:src="@{'/uploads/' + ${cliente.foto}}"/>
 				<form th:action="@{/form}" th:object=${cliente} method="post" enctype="multipart/form-data">
 
 					<div class="form-group row">

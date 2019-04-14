@@ -1,5 +1,6 @@
 package com.bolsadeideas.springboot.app.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -47,10 +48,12 @@ public class ClienteController {
 	private IClienteService clienteService;
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
+	
+	private final static String UPLOADS_FOLDER = "uploads";
 
 	@GetMapping(value="/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename){
-		Path pathFoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+		Path pathFoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
 		log.info("pathFoto: " + pathFoto);
 		
 		Resource recurso = null;
@@ -135,16 +138,38 @@ public class ClienteController {
 	public String guardar(@Valid Cliente cliente, BindingResult result, Map<String,Object> model, 
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 		
-		String valueBtn = (cliente.getId() != null) ? "Editar cliente" : "Crear cliente" ;
+		
+		Boolean clienteExistente = cliente.getId() != null;
+		
+		String valueBtn = (clienteExistente) ? "Editar cliente" : "Crear cliente" ;
 		if(result.hasErrors()) {
 			model.put("titulo", valueBtn);
 			return "form";
 			}
 		
+		
 		if (foto != null && !foto.isEmpty()) {
 			
+			//Borra la foto del cliente que tuviera antes
+			if (clienteExistente) {
+				String nombreFotoAntigua = clienteService.findOne(cliente.getId()).getFoto();
+				if (nombreFotoAntigua != null && !nombreFotoAntigua.isEmpty()) {
+					Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(nombreFotoAntigua).toAbsolutePath();
+					File archivoFiles = rootPath.toFile();
+					if(!archivoFiles.exists() && !archivoFiles.canWrite()) {
+						String msg = "La imagen '" + nombreFotoAntigua + "' no existe o no tiene permiso";
+						flash.addFlashAttribute("error", msg);
+					} else {
+						if(archivoFiles.delete()) {
+							flash.addFlashAttribute("info", "La fotografía perteneciente al cliente '" 
+										+ cliente.getNombre() + " " + cliente.getApellido() + "' se ha eliminado con éxito");
+						}
+					}
+				}
+			} 
+			
 			String uniqueFilenameString = UUID.randomUUID().toString()+"_"+foto.getOriginalFilename();
-			Path rootPath = Paths.get("uploads").resolve(uniqueFilenameString);
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilenameString);
 			Path rootAbsolutePath = rootPath.toAbsolutePath();
 			log.info("rootPath: " + rootPath);
 			log.info("rootAbsolutePath: " + rootAbsolutePath);
@@ -170,12 +195,28 @@ public class ClienteController {
 	public String eliminar(@PathVariable(value="id") Long id, RedirectAttributes flash) {
 		if (id>0) {
 			Cliente cliente = clienteService.findOne(id);
+			
 			if (cliente == null) {
 				flash.addFlashAttribute("error", "El ID del cliente no existe en la BBDD");
-				
 			} else {
-				clienteService.delete(id);
-				flash.addFlashAttribute("success", "Cliente eliminado con exito");
+				Path rootPath;
+				if(cliente.getFoto() != null && !cliente.getFoto().isEmpty() ) {
+					rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
+					
+					File archivoFiles = rootPath.toFile();
+
+					if(!archivoFiles.exists() && !archivoFiles.canWrite()) {
+						String msg = "La imagen '" + cliente.getFoto() + "' no existe o no tiene permiso";
+						flash.addFlashAttribute("error", msg);
+					} else {
+						if(archivoFiles.delete()) {
+							flash.addFlashAttribute("info", "La fotografía perteneciente al cliente '" 
+										+ cliente.getNombre() + " " + cliente.getApellido() + "' se ha eliminado con éxito");
+						}
+						clienteService.delete(id);
+						flash.addFlashAttribute("success", "Cliente eliminado con exito");
+					}
+				} 
 			}
 		} else {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser cero");
