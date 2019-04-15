@@ -21,7 +21,7 @@
 
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-4" th:if="${#strings.length(cliente.foto) > 0 }">
+						<div class="col-sm-4" th:if="${ cliente.foto != null and #strings.length(cliente.foto) > 0 }">
 							<img th:if="${#strings.length(cliente.foto) > 0 }"
 								class="img-fluid rounded"
 								th:alt-title="${cliente.foto}"
