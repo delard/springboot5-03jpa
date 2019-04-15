@@ -97,4 +97,11 @@ public class Factura implements Serializable{
 		items.add(item);
 	}
 	
+	public Double getTotal(){
+		Double total = 0D;
+		for(ItemFactura item : items) {
+			total+=item.calcularImporte();
+		}
+		return total;
+	}
 }
